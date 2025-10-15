@@ -8,6 +8,8 @@ const Hero = () => {
   const logoRef = useRef(null);
   const lightningRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
+  const [selectionIndex, setSelectionIndex] = useState(-1);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     // Animate logo particles
@@ -57,6 +59,68 @@ const Hero = () => {
         force3D: true // GPU acceleration
       });
     });
+
+    // Selection animation - starts after particles load (smooth version)
+    setTimeout(() => {
+      let animationFrameId;
+      
+      const animateSelection = () => {
+        const text = 'CursedBuild';
+        let startTime = null;
+        const openDuration = 960; // 80ms * 12 letters
+        const holdDuration = 800;
+        const closeDuration = 960;
+        const restDuration = 3000;
+        
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const elapsed = timestamp - startTime;
+          
+          if (elapsed < openDuration) {
+            // Opening phase - smooth progression
+            const progress = elapsed / openDuration;
+            const index = Math.floor(progress * (text.length + 1));
+            setSelectionIndex(index);
+            setIsClosing(false);
+            animationFrameId = requestAnimationFrame(animate);
+          } else if (elapsed < openDuration + holdDuration) {
+            // Hold phase
+            setSelectionIndex(text.length);
+            setIsClosing(false);
+            animationFrameId = requestAnimationFrame(animate);
+          } else if (elapsed < openDuration + holdDuration + closeDuration) {
+            // Closing phase - smooth progression
+            const closeElapsed = elapsed - openDuration - holdDuration;
+            const progress = closeElapsed / closeDuration;
+            const index = Math.floor(progress * (text.length + 1));
+            setSelectionIndex(index);
+            setIsClosing(true);
+            animationFrameId = requestAnimationFrame(animate);
+          } else if (elapsed < openDuration + holdDuration + closeDuration + restDuration) {
+            // Rest phase
+            setSelectionIndex(-1);
+            setIsClosing(false);
+            animationFrameId = requestAnimationFrame(animate);
+          } else {
+            // Restart animation
+            setSelectionIndex(-1);
+            setIsClosing(false);
+            animateSelection();
+          }
+        };
+        
+        animationFrameId = requestAnimationFrame(animate);
+      };
+      
+      animateSelection();
+      
+      // Cleanup
+      return () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+      };
+    }, 2500);
   }, []);
 
   return (
@@ -66,7 +130,14 @@ const Hero = () => {
         <div className="logo-container" ref={logoRef}>
           <h1 className="cursed-logo">
             {'CursedBuild'.split('').map((char, i) => (
-              <span key={i} className="rune-particle">
+              <span 
+                key={i} 
+                className={`rune-particle ${
+                  isClosing 
+                    ? (i >= selectionIndex ? 'selected' : '')
+                    : (i < selectionIndex ? 'selected' : '')
+                }`}
+              >
                 {char}
               </span>
             ))}

@@ -77,22 +77,24 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="auth-modal-overlay"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-      >
+    <AnimatePresence mode="wait">
+      {isOpen && (
         <motion.div
-          className="auth-modal-content"
-          initial={{ opacity: 0, scale: 0.8, y: 50 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 50 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          onClick={(e) => e.stopPropagation()}
+          className="auth-modal-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={onClose}
         >
+          <motion.div
+            className={`auth-modal-content ${mode === 'login' ? 'login-mode' : 'register-mode'}`}
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 30 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            onClick={(e) => e.stopPropagation()}
+          >
           {/* Close Button */}
           <motion.button
             className="auth-close-btn"
@@ -104,27 +106,15 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
           </motion.button>
 
           {/* Title */}
-          <motion.h2
-            className="auth-title"
-            key={mode}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+          <h2 className="auth-title">
             {mode === 'login' ? 'Welcome Back' : 'Join CursedBuild'}
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            className="auth-subtitle"
-            key={`${mode}-subtitle`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-          >
+          <p className="auth-subtitle">
             {mode === 'login' 
               ? 'Enter your credentials to continue' 
               : 'Create an account to get started'}
-          </motion.p>
+          </p>
 
           {/* Error/Success Messages */}
           <AnimatePresence>
@@ -151,14 +141,12 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
           </AnimatePresence>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="auth-form">
+          <form 
+            onSubmit={handleSubmit} 
+            className="auth-form"
+          >
             {mode === 'register' && (
-              <motion.div
-                className="form-group"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-              >
+              <div className="form-group">
                 <label className="form-label">
                   <FaUser className="input-icon" />
                   Full Name
@@ -172,15 +160,10 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                   required
                   className="form-input"
                 />
-              </motion.div>
+              </div>
             )}
 
-            <motion.div
-              className="form-group"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: mode === 'register' ? 0.2 : 0.1 }}
-            >
+            <div className="form-group">
               <label className="form-label">
                 <FaEnvelope className="input-icon" />
                 Email Address
@@ -194,14 +177,9 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                 required
                 className="form-input"
               />
-            </motion.div>
+            </div>
 
-            <motion.div
-              className="form-group"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: mode === 'register' ? 0.3 : 0.2 }}
-            >
+            <div className="form-group">
               <label className="form-label">
                 <FaLock className="input-icon" />
                 Password
@@ -224,15 +202,10 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-            </motion.div>
+            </div>
 
             {mode === 'register' && (
-              <motion.div
-                className="form-group"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}
-              >
+              <div className="form-group">
                 <label className="form-label">
                   <FaLock className="input-icon" />
                   Confirm Password
@@ -255,7 +228,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
                     {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             <motion.button
@@ -285,6 +258,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
           <div className="modal-corner br"></div>
         </motion.div>
       </motion.div>
+      )}
     </AnimatePresence>
   );
 };

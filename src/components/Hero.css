@@ -38,6 +38,49 @@
 .rune-particle {
   display: inline-block;
   position: relative;
+  transition: all 0.3s ease;
+  /* Ensure text is visible */
+  background: linear-gradient(45deg, var(--cursed-purple), var(--cursed-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.rune-particle.selected {
+  /* Override gradient to show solid background */
+  -webkit-text-fill-color: var(--cursed-white);
+  background: linear-gradient(135deg, rgba(143, 0, 255, 0.6), rgba(20, 241, 149, 0.5));
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  box-shadow: 
+    0 0 20px rgba(143, 0, 255, 0.8),
+    0 0 40px rgba(20, 241, 149, 0.6),
+    inset 0 0 20px rgba(143, 0, 255, 0.4);
+  border-radius: 8px;
+  padding: 5px 8px;
+  margin: 0 2px;
+  transform: scale(1.05);
+  animation: selection-glow 0.5s ease-in-out;
+}
+
+@keyframes selection-glow {
+  0% {
+    box-shadow: 
+      0 0 10px rgba(143, 0, 255, 0.4),
+      0 0 20px rgba(20, 241, 149, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(143, 0, 255, 0.8),
+      0 0 60px rgba(20, 241, 149, 0.6),
+      inset 0 0 30px rgba(143, 0, 255, 0.4);
+  }
+  100% {
+    box-shadow: 
+      0 0 20px rgba(143, 0, 255, 0.6),
+      0 0 40px rgba(20, 241, 149, 0.4),
+      inset 0 0 20px rgba(143, 0, 255, 0.3);
+  }
 }
 
 .rune-particle::after {
