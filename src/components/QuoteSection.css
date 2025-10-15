@@ -1,0 +1,255 @@
+.quote-section {
+  width: 100%;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.quote-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quote-box {
+  position: relative;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
+  padding: 20px 80px;
+  background: rgba(24, 24, 28, 0.4);
+  border: 3px solid transparent;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 
+    0 15px 40px rgba(143, 0, 255, 0.2),
+    inset 0 0 30px rgba(143, 0, 255, 0.05);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animated Border Glow */
+.border-glow {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(
+    45deg,
+    var(--cursed-purple),
+    var(--cursed-green),
+    var(--cursed-purple),
+    var(--cursed-green)
+  );
+  background-size: 300% 300%;
+  border-radius: 20px;
+  z-index: -1;
+  animation: gradient-flow 6s ease infinite;
+}
+
+@keyframes gradient-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Quote Marks */
+.quote-mark {
+  position: absolute;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--cursed-purple), var(--cursed-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.2;
+  line-height: 0.8;
+  pointer-events: none;
+  filter: drop-shadow(0 0 15px var(--cursed-purple));
+}
+
+.quote-mark.left {
+  top: 10px;
+  left: 15px;
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.quote-mark.right {
+  bottom: 10px;
+  right: 15px;
+  animation: pulse-glow 3s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+/* Quote Text */
+.quote-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 0 15px rgba(143, 0, 255, 0.3);
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Corner Decorations */
+.corner-deco {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 3px solid;
+  border-color: var(--cursed-green);
+  transition: all 0.5s ease;
+}
+
+.corner-deco.top-left {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 5px;
+}
+
+.corner-deco.top-right {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 5px;
+}
+
+.corner-deco.bottom-left {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+}
+
+.corner-deco.bottom-right {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 5px;
+}
+
+.quote-box:hover .corner-deco {
+  width: 45px;
+  height: 45px;
+  border-color: var(--cursed-purple);
+  box-shadow: 0 0 15px var(--cursed-purple);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .quote-box {
+    height: 120px;
+    min-height: 120px;
+    max-height: 120px;
+    padding: 20px 50px;
+  }
+
+  .quote-text {
+    font-size: 22px;
+  }
+
+  .quote-mark {
+    font-size: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-section {
+    padding: 30px 15px;
+  }
+
+  .quote-box {
+    height: 100px;
+    min-height: 100px;
+    max-height: 100px;
+    padding: 15px 30px;
+  }
+
+  .quote-text {
+    font-size: 18px;
+    padding: 0 15px;
+  }
+
+  .quote-mark {
+    font-size: 50px;
+  }
+
+  .quote-mark.left {
+    top: 5px;
+    left: 10px;
+  }
+
+  .quote-mark.right {
+    bottom: 5px;
+    right: 10px;
+  }
+
+  .corner-deco {
+    width: 25px;
+    height: 25px;
+  }
+
+  .quote-box:hover .corner-deco {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quote-box {
+    height: 90px;
+    min-height: 90px;
+    max-height: 90px;
+    padding: 10px 20px;
+  }
+
+  .quote-text {
+    font-size: 16px;
+    padding: 0 10px;
+  }
+
+  .quote-mark {
+    font-size: 40px;
+  }
+}
